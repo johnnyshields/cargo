@@ -40,3 +40,8 @@ end
 test "Foo2 should be possible" do
   assert "Hello" == Foo2.new.bar
 end
+
+test "Doesn't load files twice" do
+  import("test/sets_global")
+  assert 1 == import("test/sets_global")
+end
