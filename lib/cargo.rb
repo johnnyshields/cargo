@@ -1,12 +1,17 @@
+require 'thread'
+
 module Cargo
   VERSION = "0.0.3"
   REGISTRY = {}
+  SEMAPHORE = Mutex.new
 
   def import(file)
-    REGISTRY.fetch(file.sub(/\.rb$/, '').freeze) do |name|
-      load("#{name}.rb", true)
-      REGISTRY[name] = Thread.current[:cargo].tap do
-        Thread.current[:cargo] = nil
+    SEMAPHORE.synchronize do
+      REGISTRY.fetch(file.sub(/\.rb$/, '').freeze) do |name|
+        load("#{name}.rb", true)
+        REGISTRY[name] = Thread.current[:cargo].tap do
+          Thread.current[:cargo] = nil
+        end
       end
     end
   end
