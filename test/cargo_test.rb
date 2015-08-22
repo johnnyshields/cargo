@@ -55,5 +55,6 @@ class CargoTest < Minitest::Test
   def test_nested_imports
     parent = import("test/my_parent")
     assert_match /^#<Module:0x[0-9a-z]{14}>::MyChild$/, parent.new.child.class.name
+    assert_match 'Hello', parent.new.ask_child
   end
 end

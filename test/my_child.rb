@@ -1,6 +1,6 @@
 class MyChild
   def say_hello
-    'hello'
+    'Hello'
   end
 end
 
