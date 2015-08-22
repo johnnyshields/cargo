@@ -1,9 +1,10 @@
 require 'thread'
+require 'monitor'
 
 module Cargo
   VERSION = "0.0.3"
   REGISTRY = {}
-  SEMAPHORE = Mutex.new
+  SEMAPHORE = Monitor.new
 
   def import(file)
     SEMAPHORE.synchronize do

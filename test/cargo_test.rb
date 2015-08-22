@@ -19,36 +19,41 @@ class CargoTest < Minitest::Test
   end
 
   def test_Foo_is_not_available
-    assert nil == defined?(Foo)
+    assert_equal nil, defined?(Foo)
   end
 
   def test_Foo1_is_a_class
-    assert Class == Foo1.class
+    assert_equal Class, Foo1.class
   end
 
   def test_methods_are_available
-    assert "Hello" == Foo1.new.bar
+    assert_equal "Hello", Foo1.new.bar
   end
 
   def test_methods_on_nested_classes_are_available
-    assert "Hello" == Foo1::Bar.new.baz
-    assert "Hello" == Foo1::Bar::Baz.new.qux
+    assert_equal "Hello", Foo1::Bar.new.baz
+    assert_equal "Hello", Foo1::Bar::Baz.new.qux
   end
 
   def test_nested_classes_are_not_available_in_the_top_level
     begin
       Bar::Baz.new.qux
     rescue
-      assert NameError == $!.class
+      assert_equal NameError, $!.class
     end
   end
 
   def test_Foo2_should_be_possible
-    assert "Hello" == Foo2.new.bar
+    assert_equal "Hello", Foo2.new.bar
   end
 
   def test_doesnt_load_files_twice
     import("test/sets_global")
-    assert 1 == import("test/sets_global")
-   end
+    assert_equal 1, import("test/sets_global")
+  end
+
+  def test_nested_imports
+    parent = import("test/my_parent")
+    assert_match /^#<Module:0x[0-9a-z]{14}>::MyChild$/, parent.new.child.class.name
+  end
 end
