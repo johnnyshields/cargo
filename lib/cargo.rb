@@ -22,3 +22,9 @@ module Cargo
 end
 
 extend Cargo
+
+class Object
+  def import(file)
+    TOPLEVEL_BINDING.eval('self').import(file)
+  end
+end
